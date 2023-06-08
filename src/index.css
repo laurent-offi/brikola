@@ -198,7 +198,13 @@ button.buy:hover {
   background: #3ec04b!important;
 }
 
-
+.success {
+  background-color: #41aa4b;
+  color: white;
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  margin-top: 1rem;
+}
 
 .row {
   display: -webkit-box;

@@ -31,16 +31,17 @@ const connexion_utilisateur_async = async (req, res) => {
   await connexion_utilisateur(req, res);
 }
 
+const show_cart_async = async (req, res) => {
+  await show_cart(req, res);
+};
+
 const show_shops_async = async (req, res) => {
   await show_shops(req, res);
-}
+};
+
 
 const show_articles_async = async (req, res) => {
   await show_articles(req, res);
-}
-
-const show_carts_async = async (req, res) => {
-  await show_cart(req, res);
 }
 
 
@@ -94,40 +95,21 @@ async function show_articles(req, res) {
   }
 }
 
-// async function show_articles(req, res) {
-//   try {
-//     const [rows] = await pool_connexion.query(`
-//     SELECT articles.*, shops.shop_name AS shop_name, city.city_name AS city_name FROM articles
-//     LEFT JOIN shops ON articles.id_shop = shops.shop_id
-//     LEFT JOIN city ON shops.city = city.city_id
-//     `);
-
-//     const articles = rows.map((row) => {
-//       return {
-//         id: row.id,
-//         name: row.name,
-//         price: row.price,
-//         shop: {
-//           id: row.id_shop,
-//           name: row.shop_name,
-//           city: row.city_name,
-//         },
-//         // autres propriétés de la table "articles" ici...
-//       };
-//     });
-
-//     res.json(articles);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send({ error: 'Impossible de se connecter à la base de données' });
-//   }
-// }
-
+async function show_cart(req, res) {
+  try {
+    // Return the cart data from localStorage
+    const cartData = JSON.parse(localStorage.getItem('cart')) || [];
+    res.json(cartData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'An error occurred while fetching the cart data' });
+  }
+}
 
 app.post('/api/connexion_utilisateur', connexion_utilisateur_async)
-app.get('/api/show_shops', show_shops_async)
-app.get('/api/show_articles', show_articles_async)
-app.get('/api/show_cart', show_cart_async)
+app.get('/api/show_shops', show_shops_async);
+app.get('/api/show_articles', show_articles_async);
+app.get('/api/show_cart', show_cart_async);
 
 // Lecture du port et du serveur
 

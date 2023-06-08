@@ -1,89 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { CartContext } from './CartContext';
 
-function Cart()
-{
+function Cart() {
+  const { cart, removeFromCart } = useContext(CartContext);
 
-    const [donnees, setDonnees] = useState(null);
+  useEffect(() => {
+    // Ajoutez ici votre logique pour mettre à jour le panier en temps réel
+  }, [cart]);
 
-    useEffect(() => {
-      async function fetchDonnees() {
-        const response = await fetch('http://localhost:7005/api/show_cart');
-        const donnees = await response.json();
-
-        console.log(donnees)
-        setDonnees(donnees);
-      }
-      fetchDonnees();
-    }, []);
-
-
-    const Cart = () => {
-        const [cart, setCart] = useState([]);
-      
-        useEffect(() => {
-          const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-          setCart(savedCart);
-        }, []);
-      
-        const removeFromCart = (articleId) => {
-          const updatedCart = cart.filter((article) => article.id !== articleId);
-          setCart(updatedCart);
-          localStorage.setItem('cart', JSON.stringify(updatedCart));
-        };
-      
-        const calculateTotalPrice = () => {
-          return cart.reduce((total, article) => {
-            return total + article.totalPrice;
-          }, 0);
-        };
+  const calculateTotalPrice = () => {
+    if (!Array.isArray(cart)) {
+      return 0;
     }
-    
-    return(
-        <div class="container"> 
 
-        <div class="row">
+    return cart.reduce((total, item) => {
+      return total + item.totalPrice;
+    }, 0);
+  };
 
-            <div class="col-7">
-            
-            <div class="box">
-
-                    <h1>Panier</h1>
-
-                    <hr/>
-
-                    <ul class="cart">
-                    {cart.map((item, index) => (
-                    <div key={index}>
-                        <h2>{item.article_name}</h2>
-                        <p>Disponible chez : <b>{item.shop_name} (A {item.city_name})</b></p>
-                        <p>Prix unitaire : {item.price}€</p>
-                        <button onClick={() => removeFromCart(article.id)}>Retirer du panier</button>
-                    </div>
-                    ))}
-                    </ul>
-
-            </div>
-
-            </div>
-
-            <div class="col-3">
-
-            <div class="box">
-            {cart.map((item, index) => (
-                <p>Prix total : {calculateTotalPrice()}€</p>
-            ))}
-
-                <button class="buy">Passer à la caisse</button>
-
-                </div>
-
-            </div>
-
-            </div>
-
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="col-7">
+          <div className="box">
+            <h1>Panier</h1>
+            <hr />
+            {Array.isArray(cart) && cart.length > 0 ? (
+              <ul className="cart">
+                {cart.map((item, index) => (
+                  <div key={index}>
+                    <h2>{item.article_name}</h2>
+                    <p>
+                      Disponible chez : <b>{item.shop_name} (A {item.city_name})</b>
+                    </p>
+                    <p>Prix unitaire : {item.price}€</p>
+                    <button onClick={() => removeFromCart(item.id)}>Retirer du panier</button>
+                  </div>
+                ))}
+              </ul>
+            ) : (
+              <p>Votre panier est vide.</p>
+            )}
+          </div>
         </div>
-
-    )
+        <div className="col-3">
+          <div className="box">
+            <p>Prix total : {calculateTotalPrice()}€</p>
+            <button className="buy">Passer à la caisse</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default Cart;
