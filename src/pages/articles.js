@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-
+import { CartContext } from './CartContext';
 
 function Articles() {
   const [donnees, setDonnees] = useState(null);
@@ -10,29 +10,28 @@ function Articles() {
     async function fetchDonnees() {
       const response = await fetch('http://localhost:7005/api/show_articles');
       const donnees = await response.json();
-
+  
       console.log(donnees);
       setDonnees(donnees);
+  
+      const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+      setCart(savedCart);
     }
+  
     fetchDonnees();
   }, []);
-
+  
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
     setCart(savedCart);
   }, []);
 
   const addToCart = (articleToAdd) => {
-    const existingArticle = cart.find((article) => article.id === articleToAdd.id);
+    const existingArticleIndex = cart.findIndex((article) => article.article_id === articleToAdd.article_id);
   
-    if (existingArticle) {
-      const updatedCart = cart.map((article) => {
-        if (article.id === articleToAdd.id) {
-          return { ...article, quantity: article.quantity + 1 };
-        }
-        return article;
-      });
-  
+    if (existingArticleIndex !== -1) {
+      const updatedCart = [...cart];
+      updatedCart[existingArticleIndex].quantity += 1;
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     } else {
@@ -45,6 +44,8 @@ function Articles() {
     const message = `L'article "${articleName}" a bien été ajouté au panier !`;
     setMessage(message);
   };
+  
+
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);

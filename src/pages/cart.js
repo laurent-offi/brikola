@@ -12,9 +12,9 @@ function Cart() {
     if (!Array.isArray(cart)) {
       return 0;
     }
-
+  
     return cart.reduce((total, item) => {
-      return total + item.totalPrice;
+      return total + (item.price * item.quantity);
     }, 0);
   };
 
@@ -28,14 +28,15 @@ function Cart() {
             {Array.isArray(cart) && cart.length > 0 ? (
               <ul className="cart">
                 {cart.map((item, index) => (
-                  <div key={index}>
+                  <li key={index}>
                     <h2>{item.article_name}</h2>
                     <p>
                       Disponible chez : <b>{item.shop_name} (A {item.city_name})</b>
                     </p>
                     <p>Prix unitaire : {item.price}€</p>
-                    <button onClick={() => removeFromCart(item.id)}>Retirer du panier</button>
-                  </div>
+                    <p>Quantité : {item.quantity}</p>
+                    <button onClick={() => removeFromCart(index)}>Retirer du panier</button>
+                  </li>
                 ))}
               </ul>
             ) : (

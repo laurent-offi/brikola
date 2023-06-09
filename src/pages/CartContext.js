@@ -33,11 +33,13 @@ export const CartProvider = ({ children }) => {
   };
 
   // Supprimer un article du panier
-  const removeFromCart = (articleId) => {
-    const updatedCart = cart.filter((item) => item.id !== articleId);
-    updateCart(updatedCart);
+  const removeFromCart = (index) => {
+    const updatedCart = [...cart];
+    updatedCart.splice(index, 1);
+    setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
-
+  
   return (
     <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
       {children}
