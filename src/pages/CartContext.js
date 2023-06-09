@@ -13,7 +13,6 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-  // Mettre à jour le panier dans le localStorage et le contexte
   const updateCart = (updatedCart) => {
     setCart(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));

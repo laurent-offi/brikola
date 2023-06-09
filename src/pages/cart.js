@@ -5,7 +5,6 @@ function Cart() {
   const { cart, removeFromCart } = useContext(CartContext);
 
   useEffect(() => {
-    // Ajoutez ici votre logique pour mettre à jour le panier en temps réel
   }, [cart]);
 
   const calculateTotalPrice = () => {
