@@ -11,10 +11,28 @@ function Cart() {
     if (!Array.isArray(cart)) {
       return 0;
     }
-  
+
     return cart.reduce((total, item) => {
       return total + (item.price * item.quantity);
     }, 0);
+
+  }
+
+  const renderCalcContent = () => {
+    let buttonContent;
+    if (calculateTotalPrice() > 0) {
+      buttonContent = (
+        <>
+          <p>Prix total : <b>{calculateTotalPrice()}€</b></p>
+          <button className="buy">Passer à la caisse</button>
+        </>
+      );
+    } else {
+      buttonContent = (
+        <div className="error-calcul">Veuillez ajouter un article au panier.</div>
+      );
+    }
+    return buttonContent;
   };
 
   return (
@@ -45,8 +63,8 @@ function Cart() {
         </div>
         <div className="col-3">
           <div className="box">
-            <p>Prix total : {calculateTotalPrice()}€</p>
-            <button className="buy">Passer à la caisse</button>
+            {renderCalcContent()}
+
           </div>
         </div>
       </div>

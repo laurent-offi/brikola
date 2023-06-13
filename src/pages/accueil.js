@@ -5,6 +5,7 @@ function Accueil()
     const [email, ChangeEmail] = useState('');
     const [password, ChangePassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [logged, setLogged] = useState(localStorage.getItem('logged_in') === 'true');
 
     async function CheckButton(event) {
 
@@ -33,19 +34,18 @@ function Accueil()
 
         if (result.role) {
            
-            localStorage.setItem('est_connecter','true')
-            localStorage.setItem('role_utilisateur', result.role)
-            localStorage.setItem('Id_Etudiant', result.Id_Etudiant)
-            localStorage.setItem('Id_Utilisateur', result.Id_Utilisateur)
-            window.location.href = "/form1";
-
-
+            localStorage.setItem('logged_in','true')
+            localStorage.setItem('userRole', result.role)
+            localStorage.setItem('userId', result.UserId)
+            window.location.href = "/shops";
         }
         else if (result.role === 'invité') {
             setErrorMessage('Mauvais mot de passe !');
             console.log(result);
         }
     }
+
+    if (!logged) {
     
     return(
         <div class="container"> 
@@ -73,8 +73,19 @@ function Accueil()
 
 
         </div>
-
     )
+
+    } else {
+
+        return(
+            <div class="container"> 
+                
+               <h1>Bienvenue sur votre espace membre.</h1>
+    
+            </div>
+        )
+
+    }
 }
 
 export default Accueil;

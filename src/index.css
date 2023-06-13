@@ -39,6 +39,12 @@ nav .sb {
   margin-right: auto;
 }
 
+.error-calcul {
+  text-align: center;
+  color: #942034;
+  font-weight: 600;
+}
+
 nav ul {
   display: flex;
 }
