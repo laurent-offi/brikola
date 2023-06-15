@@ -7,10 +7,12 @@ import Shops from './pages/shops';
 import Articles from './pages/articles';
 import Profils from './pages/profil';
 import Cart from './pages/cart';
+import Dashboard from './pages/dashboard';
 import { CartContext, CartProvider } from './pages/CartContext';
 
 function App() {
   const [logged, setLogged] = useState(localStorage.getItem('logged_in') === 'true');
+  const [admin, setAdmin] = useState(localStorage.getItem('userRole') === 'Admin');
 
   return (
     <Router>
@@ -21,6 +23,7 @@ function App() {
             <Route path="/shops" element={<Shops />} />
             {logged && <Route path="/articles" element={<Articles />} />}
             {logged && <Route path="/cart" element={<Cart />} />}
+            {logged && admin && <Route path="/dashboard" element={<Dashboard />} />}
             <Route path="/accueil" element={<Accueil />} />
             <Route path="/" element={<Accueil />} />
           </Routes>

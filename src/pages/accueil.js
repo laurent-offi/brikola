@@ -5,6 +5,7 @@ function Accueil()
     const [email, ChangeEmail] = useState('');
     const [password, ChangePassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [role, setRole] = useState('');
     const [logged, setLogged] = useState(localStorage.getItem('logged_in') === 'true');
 
     async function CheckButton(event) {
@@ -12,16 +13,16 @@ function Accueil()
         event.preventDefault();
 
         //donnée a tester par l'api post
-        const donnee_a_verifier = { email: email, password: password }
+        const data_verify = { email: email, password: password }
 
-        let response = await fetch("http://localhost:7005/api/connexion_utilisateur",
+        let response = await fetch("http://localhost:7005/api/user_login",
             {
                 method: 'POST',
                 headers:
                 {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(donnee_a_verifier)
+                body: JSON.stringify(data_verify)
             });
 
         // analyse si l'api répond
@@ -32,16 +33,16 @@ function Accueil()
         // stockage de la réponse
         let result = await response.json();
 
-        if (result.role) {
+        if (result.role != "Invité") {
            
             localStorage.setItem('logged_in','true')
             localStorage.setItem('userRole', result.role)
-            localStorage.setItem('userId', result.UserId)
+            localStorage.setItem('username', result.username)
+            localStorage.setItem('id', result.id)
             window.location.href = "/shops";
         }
-        else if (result.role === 'invité') {
-            setErrorMessage('Mauvais mot de passe !');
-            console.log(result);
+        else {
+            setErrorMessage('Mauvaise adresse email ou mauvais mot de passe !');
         }
     }
 
@@ -55,15 +56,16 @@ function Accueil()
                 <div class="box-container">
 
                 <form class="col">
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
+
                 <label for="email">E-Mail</label>
                 <input type="email" id="email" value={email} onChange={(e) => ChangeEmail(e.target.value)}>
                 </input>
-                <label for="passe">Mot de passe</label>
-                {errorMessage && <h2 className="error-message">{errorMessage}</h2>}
-                <input type="password" id="passe" value={password} onChange={(e) => ChangePassword(e.target.value)}>
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" value={password} onChange={(e) => ChangePassword(e.target.value)}>
                 </input>
                 <button onClick={CheckButton}>
-                    Connexion
+                    Se connecter
                 </button>
                 </form>
 

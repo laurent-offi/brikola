@@ -47,6 +47,7 @@ nav .sb {
 
 nav ul {
   display: flex;
+  align-items: center;
 }
 
 nav li {
@@ -72,16 +73,6 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-.login-box {
-  background-color: #FAFAFA;
-  box-shadow: 0px 1px 11px rgba(0, 0, 0, 0.25);
-  border-radius: 50px;
-  margin-top: 2rem;
-  width: 60%;
-  margin: auto;
-  margin-top: 3rem;
 }
 
 .cards-container {
@@ -142,6 +133,16 @@ ul {
   list-style: none;
 }
 
+.login-box {
+  background-color: #FAFAFA;
+  box-shadow: 0px 1px 11px rgba(0, 0, 0, 0.25);
+  border-radius: 30px;
+  margin-top: 2rem;
+  width: 60%;
+  margin: auto;
+  margin-top: 3rem;
+}
+
 .login-box label {
   font-weight: bold;
   margin: 1rem 0 0.5rem 0;
@@ -156,7 +157,29 @@ ul {
   flex-direction: column;
 }
 
-button {
+.box-container button {
+  background: var(--red);
+  color: white;
+  padding: 1rem;
+  outline: none;
+  border-radius: 1rem;
+  border: none;
+  margin: auto;
+  margin-top: 1rem;
+}
+
+.box button {
+  background: var(--red);
+  color: white;
+  padding: 1rem;
+  outline: none;
+  border-radius: 1rem;
+  border: none;
+  margin: auto;
+  margin-top: 1rem;
+}
+
+.cards-container button {
   background: var(--red);
   color: white;
   padding: 1rem;
@@ -204,12 +227,34 @@ button.buy:hover {
   background: #3ec04b!important;
 }
 
+.article-card button.buy {
+  margin: auto;
+  background: var(--green)!important;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  margin-top: 0.5rem;
+  display: flex;
+}
+
+.article-card button.buy:hover {
+  background: #3ec04b!important;
+}
+
 .success {
   background-color: #41aa4b;
   color: white;
   padding: 0.8rem;
   border-radius: 0.8rem;
   margin-top: 1rem;
+}
+
+.error-message {
+  background-color: #af1d1d;
+  margin: 0 0 0.5rem 0.1rem;
+  font-weight: 600;
+  padding: 0.5rem;
+  color: white;
+  border-radius: 0.7rem;
 }
 
 .row {
@@ -338,4 +383,43 @@ button.buy:hover {
 
 ul.cart {
   margin: 0.5rem 0 0.5rem 1rem;
+}
+
+button.dropdown-toggle {
+  color: white;
+}
+
+.dropdown {
+  position: relative;
+  z-index: 9999;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.dropdown-menu {
+  background: white;
+  color: white;
+  border-radius: 4px;
+  display: block;
+  padding: 10px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 200px;
+}
+
+.dropdown-menu a {
+  color: #000;
+  display: block;
+  padding: 5px;
+  text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f0f0f0;
 }

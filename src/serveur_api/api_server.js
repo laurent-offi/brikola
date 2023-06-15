@@ -27,8 +27,8 @@ console.log(config);
 const pool_connexion = sql.createPool(config);
 
 
-const connexion_utilisateur_async = async (req, res) => {
-  await connexion_utilisateur(req, res);
+const user_login_async = async (req, res) => {
+  await user_login(req, res);
 }
 
 const show_cart_async = async (req, res) => {
@@ -39,26 +39,24 @@ const show_shops_async = async (req, res) => {
   await show_shops(req, res);
 };
 
-
 const show_articles_async = async (req, res) => {
   await show_articles(req, res);
 }
 
 
-async function connexion_utilisateur(req, res) {
+async function user_login(req, res) {
   try {
     const { email, password } = req.body;
     // Contrôle avec un select
     // Ici on suppose que les informations de connexion sont stockées en base de données
-    const [utilisateur] = await pool_connexion.query(
+    const [user] = await pool_connexion.query(
       'SELECT * FROM users WHERE email = ? AND password = ?',
       [email, password]
     );
-
     // Renvoi le rôle ou “invité”
-    const role = utilisateur.length === 1 ?
-      { role: utilisateur[0].role, username: utilisateur[0].id, id:utilisateur[0].id }
-      : { role: 'invité', id: -1, id: -1 };
+    const role = user.length === 1 ?
+    { role: user[0].role, username: user[0].id, id:user[0].id }
+    : { role: 'Invité', id: -1, id: -1 };
 
     res.json(role);
   } catch (error) {
@@ -106,7 +104,7 @@ async function show_cart(req, res) {
   }
 }
 
-app.post('/api/connexion_utilisateur', connexion_utilisateur_async)
+app.post('/api/user_login', user_login_async)
 app.get('/api/show_shops', show_shops_async);
 app.get('/api/show_articles', show_articles_async);
 app.get('/api/show_cart', show_cart_async);

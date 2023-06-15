@@ -6,11 +6,18 @@ function Menu() {
   const { cart } = useContext(CartContext);
   const numItems = cart ? cart.reduce((total, item) => total + item.quantity, 0) : 0;
   const [logged, setLogged] = useState(localStorage.getItem('logged_in') === 'true');
+  const [admin, setAdmin] = useState(localStorage.getItem('userRole') === 'Admin');
+
+  const [showDropdown, setShowDropdown] = useState(false);
 
   function logout(){
     localStorage.removeItem('logged_in')
     setLogged(false)
   }
+  
+    const toggleDropdown = () => {
+      setShowDropdown(!showDropdown);
+    };
 
   if (logged) {
 
@@ -28,8 +35,29 @@ function Menu() {
             </ul>
             <div>
               <ul>
-                <li><Link to="/cart">Panier</Link> (<b>{numItems}</b>)</li>
-                <li><Link to ="/" onClick={logout}>Déconnexion</Link></li>
+                <li>
+                  <Link to="/cart">Panier</Link> (<b>{numItems}</b>)
+                </li>
+                <li>
+                  <div className="dropdown">
+                    <button className="dropdown-toggle" onClick={toggleDropdown}>
+                      Mon compte
+                    </button>
+                    {showDropdown && (
+                      <div className="dropdown-menu">
+                        {admin && (
+                          <Link to="/dashboard">Administration</Link>
+                          )}
+                          {admin && (
+                            <hr/>
+                          )}
+                        <Link to="/" onClick={logout}>
+                          Déconnexion
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
