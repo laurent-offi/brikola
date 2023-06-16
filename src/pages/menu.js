@@ -10,14 +10,14 @@ function Menu() {
 
   const [showDropdown, setShowDropdown] = useState(false);
 
-  function logout(){
+  function logout() {
     localStorage.removeItem('logged_in')
     setLogged(false)
   }
-  
-    const toggleDropdown = () => {
-      setShowDropdown(!showDropdown);
-    };
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
 
   if (logged) {
 
@@ -47,10 +47,10 @@ function Menu() {
                       <div className="dropdown-menu">
                         {admin && (
                           <Link to="/dashboard">Administration</Link>
-                          )}
-                          {admin && (
-                            <hr/>
-                          )}
+                        )}
+                        {admin && (
+                          <hr />
+                        )}
                         <Link to="/" onClick={logout}>
                           Déconnexion
                         </Link>
@@ -72,12 +72,26 @@ function Menu() {
           <div className="container sb">
             <ul>
               <li>
-                <Link to="/">Se connecter</Link>
-              </li>
-              <li>
                 <Link to="/shops">Magasins</Link>
               </li>
             </ul>
+            <div>
+              <ul>
+                <li>
+                  <div className="dropdown">
+                    <button className="dropdown-toggle" onClick={toggleDropdown}>
+                      Mon compte
+                    </button>
+                    {showDropdown && (
+                      <div className="dropdown-menu">
+                        <Link to="/">Se connecter</Link>
+                        <Link to="/register">S'inscrire</Link>
+                      </div>
+                    )}
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </nav>
       </div>

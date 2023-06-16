@@ -423,3 +423,34 @@ button.dropdown-toggle {
 .dropdown-menu a:hover {
   background-color: #f0f0f0;
 }
+
+
+
+
+@media screen and (max-width: 768px) {
+
+  .login-box {
+    width: 100%;
+  }
+
+  .cards-container .card {
+    width: 100%;
+  }
+
+  .cards-container .article-card {
+    width: 100%;
+  }
+
+  *[class^="col-"] {
+    width: 100%!important;
+  }
+
+  .row {
+    flex-wrap: wrap-reverse;
+  }
+
+  .box {
+    width: 100%;
+  }
+  
+}

@@ -8,6 +8,7 @@ import Articles from './pages/articles';
 import Profils from './pages/profil';
 import Cart from './pages/cart';
 import Dashboard from './pages/dashboard';
+import Register from './pages/register';
 import { CartContext, CartProvider } from './pages/CartContext';
 
 function App() {
@@ -24,8 +25,9 @@ function App() {
             {logged && <Route path="/articles" element={<Articles />} />}
             {logged && <Route path="/cart" element={<Cart />} />}
             {logged && admin && <Route path="/dashboard" element={<Dashboard />} />}
-            <Route path="/accueil" element={<Accueil />} />
-            <Route path="/" element={<Accueil />} />
+            {!logged && <Route path="/accueil" element={<Accueil />} />}
+            {!logged && <Route path="/register" element={<Register />} />}
+            && <Route path="/" element={<Accueil />} />
           </Routes>
         </div>
       </CartProvider>

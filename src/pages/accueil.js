@@ -82,7 +82,7 @@ function Accueil()
         return(
             <div class="container"> 
                 
-               <h1>Bienvenue sur votre espace membre.</h1>
+                <h1>Vous êtes déjà connecté.</h1>
     
             </div>
         )

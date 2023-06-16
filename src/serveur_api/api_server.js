@@ -31,8 +31,16 @@ const user_login_async = async (req, res) => {
   await user_login(req, res);
 }
 
+const user_register_async = async (req, res) => {
+  await user_register(req, res);
+}
+
 const show_cart_async = async (req, res) => {
   await show_cart(req, res);
+};
+
+const show_cities_async = async (req, res) => {
+  await show_cities(req, res);
 };
 
 const show_shops_async = async (req, res) => {
@@ -59,6 +67,44 @@ async function user_login(req, res) {
     : { role: 'Invité', id: -1, id: -1 };
 
     res.json(role);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Impossible de se connecter à la base de données' });
+  }
+}
+
+async function show_cities(req, res) {
+  try {
+    const [rows] = await pool_connexion.query('SELECT * FROM city');
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Impossible de se connecter à la base de données' });
+  }
+}
+
+async function user_register(req, res) {
+  try {
+    const { username, email, password, role, selectedCity } = req.body;
+
+    // Récupérer les données de la ville à partir de la base de données
+    const [cityResult] = await pool_connexion.query('SELECT * FROM city WHERE city_name = ?', [selectedCity]);
+
+    // Vérifier si la ville existe dans la base de données
+    if (cityResult.length === 0) {
+      throw new Error("La ville sélectionnée n'existe pas");
+    }
+
+    // Récupérer l'ID de la ville
+    const selectedCityId = cityResult[0].city_id;
+
+    // Insérer les données de l'utilisateur dans la base de données
+    const [user] = await pool_connexion.query(
+      'INSERT INTO Users (username, email, password, role, id_city) VALUES (?, ?, ?, ?, ?)',
+      [username, email, password, 'Member', selectedCityId]
+    );
+
+    res.json({ message: 'Utilisateur inscrit avec succès' });
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: 'Impossible de se connecter à la base de données' });
@@ -105,7 +151,9 @@ async function show_cart(req, res) {
 }
 
 app.post('/api/user_login', user_login_async)
+app.post('/api/user_register', user_register_async)
 app.get('/api/show_shops', show_shops_async);
+app.get('/api/show_cities', show_shops_async);
 app.get('/api/show_articles', show_articles_async);
 app.get('/api/show_cart', show_cart_async);
 
